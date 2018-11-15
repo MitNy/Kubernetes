@@ -18,13 +18,3 @@ docker info | grep -i cgroup # 도커 cgroup drive 확인
 sed -e '5 i\Environment="KUBELET_CGROUP_ARGS=--cgroup-driver=cgroupfs"\n' /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
 sed -i "s/cgroup-driver=systemd/cgroup-driver=cgroupfs/g" /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
 kubeadm init # 마스터 초기화
-# 스크립트 경로에서 실행
-echo $SCRIPTPATH
-su -l mitny -c "mkdir -p $SCRIPTPATH/.kube"
-su -l mitny -c "sudo -S cp -i /etc/kubernetes/admin.conf $SCRIPTPATH/.kube/config"
-su -l mitny -c "sudo -S chown $(id -u):$(id -g) $SCRIPTPATH/.kube/config"
-#mkdir -p $SCRIPTPATH/.kube
-#sudo cp -i /etc/kubernetes/admin.conf $SCRIPTPATH/.kube/config
-#sudo chown $(id -u):$(id -g) $SCRIPTPATH/.kube/config
-kubectl apply -f https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n') # 네트워크 배포 
-kubectl get nodes
